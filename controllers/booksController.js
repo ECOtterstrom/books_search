@@ -3,11 +3,6 @@ const axios = require('axios');
 
 // Defining methods for the booksController
 module.exports = {
-  get: async function(req, res) {
-    let { items } = req.body;
-    const { data } = await Axios.get(`GET https://www.googleapis.com/books/v1/volumes?q=azkaban+inauthor:rowling&key=AIzaSyCikpFZGcqK3r04v9mxtL2WlZmffQ6IDRQ`)
-    res.json(data);
-  },
   findAll: function(req, res) {
     db.Book
       .find(req.query)
