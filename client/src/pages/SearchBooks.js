@@ -7,11 +7,14 @@ import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
 import { Input, TextArea, FormBtn } from "../components/Form";
+import SearchCard from "../components/SearchCard";
+// import SearchResults from "../components/SearchResults";
 
-function Books() {
+
+function SearchBooks() {
   // Setting our component's initial state
   const [books, setBooks] = useState([])
-  const [formObject, setFormObject] = useState({})
+  const [search, setSearch] = useState("")
 
   // Load all books and store them with setBooks
   useEffect(() => {
@@ -20,9 +23,10 @@ function Books() {
 
   // Loads all books and sets them to books
   function loadBooks() {
-    API.getBooks()
+    API.getSearch(search)
       .then(res =>
-        setBooks(res.data)
+        {console.log(res.data.items);
+        setBooks(res.data.items)}
       )
       .catch(err => console.log(err));
   };
@@ -34,25 +38,30 @@ function Books() {
       .catch(err => console.log(err));
   }
 
+  // Saves a book from the Google database to the React Reading List database with a given id
+  function saveBook(id) {
+    API.saveBook(id)
+    .then(res => loadBooks())
+    .catch(err => console.log(err));
+  }
+
+  function viewBook(id) {
+    API.getBook(id)
+    .then(res => loadBooks())
+    .catch(err => console.log(err));
+  }
+
   // Handles updating component state when the user types into the input field
   function handleInputChange(event) {
-    const { name, value } = event.target;
-    setFormObject({ ...formObject, [name]: value })
+    const value = event.target.value;
+    setSearch(value)
   };
 
   // When the form is submitted, use the API.saveBook method to save the book data
   // Then reload books from the database
   function handleFormSubmit(event) {
     event.preventDefault();
-    if (formObject.title && formObject.author) {
-      API.saveBook({
-        title: formObject.title,
-        author: formObject.author,
-        synopsis: formObject.synopsis
-      })
-        .then(res => loadBooks())
-        .catch(err => console.log(err));
-    }
+    loadBooks();
   };
 
   return (
@@ -63,42 +72,10 @@ function Books() {
             <h1>Google Book Search</h1>
             <p>Search for and Save Books of Interest</p>
           </Jumbotron>
-          <div className="card w-100">
-            <div className="card-body">
-              <h5 className="card-title">Book Search</h5>
-              <p className="card-text">Book</p>
-              <Input
-                onChange={handleInputChange}
-                name="title"
-                placeholder="Title (required)"
-              />
-              <a href="#" className="btn btn-primary">Search</a>
-            </div>
-          </div>
+          <SearchCard handleInputChange={handleInputChange} handleFormSubmit={handleFormSubmit} />
           <p />
+          {/* <SearchResults  /> */}
           <form>
-            {/* <Input
-              onChange={handleInputChange}
-              name="title"
-              placeholder="Title (required)"
-            />
-            <Input
-              onChange={handleInputChange}
-              name="author"
-              placeholder="Author (required)"
-            />
-            <TextArea
-              onChange={handleInputChange}
-              name="synopsis"
-              placeholder="Synopsis (Optional)"
-            />
-            <FormBtn
-              disabled={!(formObject.author && formObject.title)}
-              onClick={handleFormSubmit}
-            >
-              Submit Book
-              </FormBtn> */}
-
             {books.length ? (
               <List>
                 {books.map(book => (
@@ -107,14 +84,14 @@ function Books() {
                     </Link>
                     <strong>
                       <p>
-                        {book.title}
-                        <SaveBtn onClick={() => deleteBook(book._id)} />
-                        <ViewBtn onClick={() => deleteBook(book._id)} />
+                        {book.volumeInfo.title}
+                        <SaveBtn onClick={() => saveBook(book._id)} />
+                        <ViewBtn onClick={() => viewBook(book._id)} />
                       </p>
                       <p>
-                        {book.subtitle}
+                        {book.volumeInfo.subtitle}
                       </p>
-                      <p>Written by {book.author}</p>
+                      <p>Written by {book.volumeInfo.authors.join(",")}</p>
                     </strong>
                   </ListItem>
                 ))}
@@ -130,4 +107,4 @@ function Books() {
 }
 
 
-export default Books;
+export default SearchBooks;
