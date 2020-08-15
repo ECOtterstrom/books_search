@@ -10,7 +10,6 @@ import { Input, TextArea, FormBtn } from "../components/Form";
 import SearchCard from "../components/SearchCard";
 // import SearchResults from "../components/SearchResults";
 
-
 function SearchBooks() {
   // Setting our component's initial state
   const [books, setBooks] = useState([])
