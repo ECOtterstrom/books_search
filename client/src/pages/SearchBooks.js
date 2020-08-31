@@ -2,18 +2,19 @@ import React, { useState, useEffect } from "react";
 import ViewBtn from "../components/ViewBtn";
 import SaveBtn from "../components/SaveBtn";
 import Jumbotron from "../components/Jumbotron";
-import API from "../utils/API";
+import API, { bookService } from "../utils/API";
 import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
-import { Input, TextArea, FormBtn } from "../components/Form";
+//import { Input, TextArea, FormBtn } from "../components/Form";
 import SearchCard from "../components/SearchCard";
 // import SearchResults from "../components/SearchResults";
 
-function SearchBooks() {
+function SearchBooks(props) {
   // Setting our component's initial state
   const [books, setBooks] = useState([])
   const [search, setSearch] = useState("")
+  const [book, setBook] = useState([])
 
   // Load all books and store them with setBooks
   useEffect(() => {
@@ -23,9 +24,10 @@ function SearchBooks() {
   // Loads all books and sets them to books
   function loadBooks() {
     API.getSearch(search)
-      .then(res =>
-        {console.log(res.data.items);
-        setBooks(res.data.items)}
+      .then(res => {
+        console.log(res.data.items);
+        setBooks(res.data.items)
+      }
       )
       .catch(err => console.log(err));
   };
@@ -38,16 +40,36 @@ function SearchBooks() {
   }
 
   // Saves a book from the Google database to the React Reading List database with a given id
-  function saveBook(id) {
-    API.saveBook(id)
-    .then(res => loadBooks())
-    .catch(err => console.log(err));
+  const handleSaveClick = (id) => {
+    //event.preventDefault();
+    let savedBooks = books.filter(book => book.id === id)
+    console.log(id)
+    savedBooks = savedBooks[0];
+    API.saveBook({
+      title: savedBooks.volumeInfo.title,
+      subtitle: savedBooks.volumeInfo.subtitle,
+      authors: savedBooks.volumeInfo.authors,
+      description: savedBooks.volumeInfo.description,
+      image: savedBooks.volumeInfo.imageLinks.smallThumbnail,
+      link: savedBooks.volumeInfo.previewLink,
+      date: savedBooks.volumeInfo.publishedDate
+    })
+    // API.saveBook(savedBooks)
+      .then(setBooks({ message: alert("Your book is saved") }))
+      .catch(err => console.log(err))
+      console.log(savedBooks)
   }
 
-  function viewBook(id) {
-    API.getBook(id)
-    .then(res => loadBooks())
-    .catch(err => console.log(err));
+  // function saveBook(id) {
+  //   API.saveBook(id)
+  //     .then(res => loadBooks())
+  //     .catch(err => console.log(err));
+  // }
+
+  const handleViewClick = (event) => {
+    const value = event.target.value
+    API.viewBook(value)
+    console.log(value)
   }
 
   // Handles updating component state when the user types into the input field
@@ -78,14 +100,14 @@ function SearchBooks() {
             {books.length ? (
               <List>
                 {books.map(book => (
-                  <ListItem key={book._id}>
-                    <Link to={"/books/" + book._id}>
+                  <ListItem key={book.id}>
+                    <Link to={"/api/books/" + book.id}>
                     </Link>
                     <strong>
                       <p>
                         {book.volumeInfo.title}
-                        <SaveBtn onClick={() => saveBook(book._id)} />
-                        <ViewBtn onClick={() => viewBook(book._id)} />
+                        <SaveBtn onClick={() => handleSaveClick(book.id)} />
+                        <ViewBtn onClick={() => handleViewClick(book.id)} />
                       </p>
                       <p>
                         {book.volumeInfo.subtitle}
