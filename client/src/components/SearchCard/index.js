@@ -1,23 +1,28 @@
 import React from "react";
+import { Container } from "../Grid";
 
 function SearchCard(props) {
-  return (
-    <div className="card w-100">
-    <div className="card-body">
-      <h5 className="card-title">Book Search</h5>
-      <p className="card-text">Book</p>
-      <div className="form-group">
-      <input type="text" className="form-control" {...props} 
-        onChange={props.handleInputChange}
-        name="title"
-        placeholder="Title (required)"
-      />
-      </div>
-      <a className="btn btn-primary" 
-      onClick={props.handleFormSubmit}>Search</a>
-    </div>
-  </div>
-  );
-}
+
+    return (
+        <Container>
+            <div className="jumbotron border border-dark p-2">
+                Book Search
+            <form className="search" >
+                    <div className="form-group text-right">
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Enter your search"
+                            id="book"
+                            onChange={props.inputChange}
+                        />
+                        <button type="submit" onClick={props.handler} className="btn btn-info mt-2">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </Container>
+    )
+
+};
 
 export default SearchCard;

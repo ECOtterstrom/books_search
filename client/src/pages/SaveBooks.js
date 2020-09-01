@@ -1,50 +1,63 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import { Col, Row, Container } from "../components/Grid";
-import Jumbotron from "../components/Jumbotron";
 import API from "../utils/API";
+import { List, ListItem } from "../components/List";
+import SavedCard from "../components/SavedCard";
 
-function SaveBooks(props) {
-  const [book, setBook] = useState({})
+function Saved(props) {
 
-  // When this component mounts, grab the book with the _id of props.match.params.id
-  // e.g. localhost:3000/books/599dcb67f0f16317844583fc
-  const {id} = useParams()
-  useEffect(() => {
-    API.getBook(id)
-      .then(res => setBook(res.data))
-      .catch(err => console.log(err));
-  }, [])
+    const [savedBooks, setSavedBooks] = useState([])
 
-  return (
-      <Container fluid>
-        <Row>
-          <Col size="md-12">
-            <Jumbotron>
-              <h1>
-                {book.title} by {book.author}
-              </h1>
-            </Jumbotron>
-          </Col>
-        </Row>
-        <Row>
-          <Col size="md-10 md-offset-1">
-            <article>
-              <h1>Synopsis</h1>
-              <p>
-                {book.synopsis}
-              </p>
-            </article>
-          </Col>
-        </Row>
-        <Row>
-          <Col size="md-2">
-            <Link to="/">← Back to Authors</Link>
-          </Col>
-        </Row>
-      </Container>
-    );
-  }
+    useEffect(() => loadSavedBooks(),
+        []);
 
 
-export default SaveBooks;
+    function deleteBook(event) {
+        event.preventDefault();
+        const { id } = event.target;
+        API.deleteBook(id)
+            .then(res => loadSavedBooks())
+            .catch(err => console.log(err));
+    }
+
+    function loadSavedBooks() {
+        API.getSavedBooks()
+            .then(res => {
+                if (res.data === undefined) {
+                    setSavedBooks([]);
+                } else {
+                    setSavedBooks(res.data)
+                }
+            })
+            .catch(err => console.log(err));
+    };
+
+    return (
+        <>
+            <Container>
+                <div className="jumbotron border border-dark p-2">
+                    <strong>Saved Books</strong>
+                    <br />
+                    {/* {props.children} */}
+
+                    {savedBooks.length !== 0 ? (<List>
+                        {savedBooks.map(result => (
+                            <SavedCard
+                                key={result._id}
+                                id={result._id}
+                                title={result.title}
+                                authors={result.authors === undefined ? [] : result.authors}
+                                description={result.description}
+                                image={result.image}
+                                link={result.link}
+                                deleteBook={deleteBook}
+                            />))}
+                    </List>) : (<h1>No saved books!</h1>)}
+                </div>
+            </Container>
+
+        </>
+    )
+};
+
+export default Saved;
