@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import ViewBtn from "../components/ViewBtn";
 import SaveBtn from "../components/SaveBtn";
 import Jumbotron from "../components/Jumbotron";
-import API, { bookService } from "../utils/API";
+// import API, { bookService } from "../utils/API";
+import API from "../utils/API";
 import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
 //import { Input, TextArea, FormBtn } from "../components/Form";
 import SearchCard from "../components/SearchCard";
-// import SearchResults from "../components/SearchResults";
+import Button from 'react-bootstrap/Button';
 
 function SearchBooks(props) {
   // Setting our component's initial state
@@ -60,16 +61,10 @@ function SearchBooks(props) {
       console.log(savedBooks)
   }
 
-  // function saveBook(id) {
-  //   API.saveBook(id)
-  //     .then(res => loadBooks())
-  //     .catch(err => console.log(err));
-  // }
-
   const handleViewClick = (event) => {
     const value = event.target.value
     API.viewBook(value)
-    console.log(value)
+    // console.log(value)
   }
 
   // Handles updating component state when the user types into the input field
@@ -107,7 +102,10 @@ function SearchBooks(props) {
                       <p>
                         {book.volumeInfo.title}
                         <SaveBtn onClick={() => handleSaveClick(book.id)} />
-                        <ViewBtn onClick={() => handleViewClick(book.id)} />
+                        <ViewBtn href={book.volumeInfo.link} className="viewBtn" />
+                        {/* <ViewBtn onClick={() => handleViewClick(book.link)} /> */}
+                        {/* <ViewBtn /> */}
+
                       </p>
                       <p>
                         {book.volumeInfo.subtitle}
