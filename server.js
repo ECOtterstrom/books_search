@@ -3,7 +3,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 
 const routes = require("./routes");
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 5000;
 const app = express();
 
 // Define middleware here
@@ -20,7 +20,7 @@ app.use(routes);
 // Connect to the Mongo DB
 // mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/booksearch");
 mongoose.connect(
-  process.env.MONGODB_URI || "mongodb://localhost/booksearch",
+  process.env.MONGODB_URI || "mongodb+srv://User1:secretpassword1@cluster0.1fbtu.gcp.mongodb.net/booksearch?retryWrites=true&w=majority",
   { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true }
   );
 
