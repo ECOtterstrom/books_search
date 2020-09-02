@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import SearchCard from "../components/SearchCard";
 import { Container } from "../components/Grid";
 import SearchResults from "../components/SearchResults";
-import { List, ListItem } from "../components/List";
+import { List } from "../components/List";
 import API from "../utils/API";
 
 
@@ -11,7 +11,7 @@ function Search(props) {
     const [books, setBooks] = useState({ results: [] });
     const [userQuery, setUserQuery] = useState("");
 
-    useEffect(() => searchBooks("Coding"), []);
+    useEffect(() => {searchBooks("")}, []);
 
     function handleInputChange(event) {
         const { value } = event.target;
@@ -44,9 +44,7 @@ function Search(props) {
                     <div className="jumbotron border border-dark p-2">
                         <strong>Book Results</strong>
                         <br />
-                        {/* {props.children} */}
-                    {/* </div> */}
-
+                        
                     {books.results.length ?
                         <List>
                             {books.results.map(result => (

@@ -1,12 +1,13 @@
 import React from "react";
 import { Container } from "../Grid";
+import "./style.css";
 
 function SearchCard(props) {
 
     return (
         <Container>
             <div className="jumbotron border border-dark p-2">
-                Book Search
+               <b>Book Search</b>
             <form className="search" >
                     <div className="form-group text-right">
                         <input
@@ -16,7 +17,7 @@ function SearchCard(props) {
                             id="book"
                             onChange={props.inputChange}
                         />
-                        <button type="submit" onClick={props.handler} className="btn btn-info mt-2">Submit</button>
+                        <button id="submitbtn" type="submit" onClick={props.handler} className="btn btn-info mt-2">Submit</button>
                     </div>
                 </form>
             </div>

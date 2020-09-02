@@ -1,5 +1,6 @@
 import React from "react";
 import { Container } from "../Grid";
+import "./style.css";
 
 function SavedCard(props) {
 
@@ -17,8 +18,8 @@ function SavedCard(props) {
                         </p>
                     </div>
                     <div className="col-4 text-right">
-                        <a href={props.link}><button className="btn btn-info m-1" type="button">View</button></a>
-                        <button onClick={props.deleteBook} id={props.id} className="btn btn-info m-1" type="button">Delete</button>
+                        <a href={props.link}><button className="btn btn-info m-1 btncolor" type="button">View</button></a>
+                        <button onClick={props.deleteBook} id={props.id} className="btn btn-info m-1 btncolor" type="button">Delete</button>
                     </div>
                 </div>
                 <div className="row">

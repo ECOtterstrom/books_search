@@ -1,6 +1,7 @@
 import React from "react";
 import { Container } from "../Grid";
 import API from "../../utils/API";
+import "./style.css";
 
 function SearchResults(props) {
 
@@ -29,8 +30,8 @@ function SearchResults(props) {
                             </p> : <p>No authors to display</p>}
                     </div>
                     <div className="col-4 text-right">
-                        <a href={props.link}><button className="btn btn-info m-1" type="button">View</button></a>
-                        <button className="btn btn-info m-1" onClick={saveBooks} type="button">Save</button>
+                        <a href={props.link}><button id="btncolor" className="btn btn-info m-1" type="button">View</button></a>
+                        <button id="btncolor" className="btn btn-info m-1" onClick={saveBooks} type="button">Save</button>
                     </div>
                 </div>
                 <div className="row">

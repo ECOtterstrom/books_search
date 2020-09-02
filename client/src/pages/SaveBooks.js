@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Col, Row, Container } from "../components/Grid";
+import { Container } from "../components/Grid";
 import API from "../utils/API";
-import { List, ListItem } from "../components/List";
+import { List } from "../components/List";
 import SavedCard from "../components/SavedCard";
 
 function Saved(props) {

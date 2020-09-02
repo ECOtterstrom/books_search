@@ -14,12 +14,15 @@ function App() {
     <Router>
       <div>
         <Nav />
-        <Jumbotron />
+        <Jumbotron>
+          <h1><b>Google Book Search</b></h1>
+          <p>Search for and Save Books of Interest</p>
+        </Jumbotron>
         <Switch>
           <Route exact path="/" component={SearchBooks} />
           <Route exact path="/saved" component={SaveBooks} />
           <Route exact path="/saved/:id" component={SaveBooks} />
-          <Route component={NoMatch} /> 
+          <Route component={NoMatch} />
         </Switch>
         {/* <Footer /> */}
       </div>
